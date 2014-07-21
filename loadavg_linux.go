@@ -24,7 +24,7 @@ func getLoadAvg() (loadAvg *LoadAvg, err error) {
 	}
 	content := string(file[:len(file)])
 
-	loadAvg = &LoadAvg{}
+	loadAvg = new(LoadAvg)
 	fields := strings.Fields(content)
 	for i := 0; i < 3; i++ {
 		load, err := strconv.ParseFloat(fields[i], 64)
