@@ -1,6 +1,6 @@
 package sysstats
 
-func GetLoadAvg() (*LoadAvg, error) {
+func GetLoadAvg() (LoadAvg, error) {
 	return getLoadAvg()
 }
 
