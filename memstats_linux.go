@@ -11,43 +11,40 @@ import (
 )
 
 // MemStat represents the memory statistics on a linux system
-// The following are the keys of the map:
-// memused      -  Total size of used memory in kilobytes.
-// memfree      -  Total size of free memory in kilobytes.
-// memusedper   -  Total size of used memory in percent.
-// memtotal     -  Total size of memory in kilobytes.
-// buffers      -  Total size of buffers used from memory in kilobytes.
-// cached       -  Total size of cached memory in kilobytes.
-// realfree     -  Total size of memory is real free (memfree + buffers + cached).
-// realfreeper  -  Total size of memory is real free in percent of total memory.
-// swapused     -  Total size of swap space is used is kilobytes.
-// swapfree     -  Total size of swap space is free in kilobytes.
-// swapusedper  -  Total size of swap space is used in percent.
-// swaptotal    -  Total size of swap space in kilobytes.
-// swapcached   -  Memory that once was swapped out, is swapped back in but still
-//                 also is in the swapfile.
-// active       -  Memory that has been used more recently and usually not
-//                 reclaimed unless absolutely necessary.
-// inactive     -  Memory which has been less recently used and is more eligible
-//                 to be reclaimed for other purposes.
-//
-// The following statistics are only available for kernels >= 2.6.
-// slab         -  Total size of memory in kilobytes that used by kernel for data
-//                 structure allocations.
-// dirty        -  Total size of memory pages in kilobytes that waits to be
-//                 written back to disk.
-// mapped       -  Total size of memory in kilobytes that is mapped by devices or
-//                 libraries with mmap.
-// writeback    -  Total size of memory that was written back to disk.
-// committed_as -  The amount of memory presently allocated on the system.
-//
-// The following statistic is only available for kernels >= 2.6.9.
-// commitlimit  -  Total amount of memory currently available to be allocated on
-//                 the system.
 type MemStats map[string]uint64
 
 // getMemStats gets the memory stats of a linux system from the
 // file /proc/meminfo
+// It returns MemStats (map) with the following keys:
+// MemUsed      -  Total size of used memory in kilobytes.
+// MemFree      -  Total size of free memory in kilobytes.
+// MemTotal     -  Total size of memory in kilobytes.
+// Buffers      -  Total size of buffers used from memory in kilobytes.
+// Cached       -  Total size of cached memory in kilobytes.
+// RealFree     -  Total size of memory is real free (memfree + buffers + cached).
+// SwapUsed     -  Total size of swap space is used is kilobytes.
+// SwapFree     -  Total size of swap space is free in kilobytes.
+// SwapTotal    -  Total size of swap space in kilobytes.
+// Swapcached   -  Memory that once was swapped out, is swapped back in but still
+//                 also is in the swapfile.
+// Active       -  Memory that has been used more recently and usually not
+//                 reclaimed unless absolutely necessary.
+// Inactive     -  Memory which has been less recently used and is more eligible
+//                 to be reclaimed for other purposes.
+//
+// The following statistics are only available for kernels >= 2.6.
+// Slab         -  Total size of memory in kilobytes that used by kernel for data
+//                 structure allocations.
+// Dirty        -  Total size of memory pages in kilobytes that waits to be
+//                 written back to disk.
+// Mapped       -  Total size of memory in kilobytes that is mapped by devices or
+//                 libraries with mmap.
+// Writeback    -  Total size of memory that was written back to disk.
+// Committed_AS -  The amount of memory presently allocated on the system.
+//
+// The following statistic is only available for kernels >= 2.6.9.
+// CommitLimit  -  Total amount of memory currently available to be allocated on
+//                 the system.
 func getMemStats() (memStats MemStats, err error) {
 	file, err := os.Open("/proc/meminfo")
 	if err != nil {
@@ -78,6 +75,10 @@ func getMemStats() (memStats MemStats, err error) {
 			memStats[key] = value
 		}
 	}
+
+	memStats[`MemUsed`] = memStats[`MemTotal`] - memStats[`MemFree`]
+	memStats[`SwapUsed`] = memStats[`SwapTotal`] - memStats[`SwapFree`]
+	memStats[`RealFree`] = memStats[`MemFree`] + memStats[`Buffers`] + memStats[`Cached`]
 
 	return memStats, nil
 }
