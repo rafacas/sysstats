@@ -7,3 +7,7 @@ func GetLoadAvg() (LoadAvg, error) {
 func GetMemStats() (MemStats, error) {
 	return getMemStats()
 }
+
+func GetCpuStats() (CpusRawStats, error) {
+	return getCpuStats()
+}
