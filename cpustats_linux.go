@@ -31,21 +31,21 @@ type CpusStats map[string]CpuStats
 // CpusRawStats has the following key:
 //  Name      - Name of the Cpu (as it is on /proc/stat: cpu, cpu0,...).
 // CpuRawStats has the following keys:
-//  User      - % Cpu time spent in user mode.
-//  Nice      - % Cpu time spent in user mode with low priority (nice).
-//  System    - % Cpu time spent in system mode.
-//  Idle      - % Cpu time spent in the idle task.
-//  Iowait    - % Cpu time spent waiting for I/O to complete (since 2.5.41).
-//  Irq       - % Cpu time servicing interrupts (since 2.6.0-test4).
-//  Softirq   - % Cpu time servicing softirqs (since 2.6.0-test4).
-//  Steal     - % Cpu stolen time, which is the time spent in other operating
+//  User      - Time spent in user mode.
+//  Nice      - Time spent in user mode with low priority (nice).
+//  System    - Time spent in system mode.
+//  Idle      - Time spent in the idle task.
+//  Iowait    - Time spent waiting for I/O to complete (since 2.5.41).
+//  Irq       - Time servicing interrupts (since 2.6.0-test4).
+//  Softirq   - Time servicing softirqs (since 2.6.0-test4).
+//  Steal     - Stolen time, which is the time spent in other operating
 //              systems when running a virtualized environment (since 2.6.11).
-//  Guest     - % Cpu time spent running a virtual Cpu for guest operating
+//  Guest     - Time spent running a virtual Cpu for guest operating
 //              systems under the control of the Linux kernel (since 2.6.24).
-//  GuestNice - % Cpu time spent running a niced guest (virtual Cpu for guest
+//  GuestNice - Time spent running a niced guest (virtual Cpu for guest
 //              operating systems under the control of the Linux kernel)
 //              (since 2.6.33).
-//  Total     - % Cpu utilization (not idle).
+//  Total     - Total time (not idle).
 func getCpuRawStats() (cpusRawStats CpusRawStats, err error) {
 	file, err := os.Open("/proc/stat")
 	if err != nil {
