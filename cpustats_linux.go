@@ -4,6 +4,7 @@ package sysstats
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"regexp"
@@ -45,7 +46,7 @@ type CpusStats map[string]CpuStats
 //  GuestNice - Time spent running a niced guest (virtual Cpu for guest
 //              operating systems under the control of the Linux kernel)
 //              (since 2.6.33).
-//  Total     - Total time (not idle).
+//  Total     - Total time.
 func getCpuRawStats() (cpusRawStats CpusRawStats, err error) {
 	file, err := os.Open("/proc/stat")
 	if err != nil {
@@ -95,6 +96,7 @@ func parseCpuRawStats(stats string) (cpuName string, rawStats CpuRawStats,
 		if err != nil {
 			return "", nil, err
 		}
+		rawStats[`Total`] += stat
 		switch i {
 		case 1:
 			rawStats[`User`] = stat
@@ -122,6 +124,46 @@ func parseCpuRawStats(stats string) (cpuName string, rawStats CpuRawStats,
 	return cpuName, rawStats, nil
 }
 
-func getCpuStats() (cpuStats CpusRawStats, err error) {
-	return getCpuRawStats()
+// getCpuStats calculates the average between 2 CpusRawStats samples and returns
+// the % CPU utilization
+func getCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusStats CpusStats, err error) {
+	fmt.Println(firstSample)
+	fmt.Println(secondSample)
+
+	cpusStats = CpusStats{}
+
+	for cpuName, secondRawStats := range secondSample {
+		matched, err := regexp.MatchString(`^cpu.*$`, cpuName)
+		if err != nil {
+			return nil, err
+		}
+		if !matched {
+			return nil, errors.New("cpuName doesn't match the pattern")
+		}
+
+		firstRawStats, ok := firstSample[cpuName]
+		if !ok {
+			return nil, errors.New("The key " + cpuName + " doesn't exist in the first sample of CpusRawStats")
+		}
+
+		cpuStats := CpuStats{}
+		totalTime := float64(secondRawStats[`Total`] - firstRawStats[`Total`])
+		// Calculate the average between the two samples
+		for key, secondValue := range secondRawStats {
+			// Don't calculate the average if the key is 'Total'
+			if key == `Total` {
+				continue
+			}
+			avg := float64(secondValue-firstRawStats[key]) * 100.0 / totalTime
+			avgStr := fmt.Sprintf("%3.2f", avg)
+			cpuStats[key], err = strconv.ParseFloat(avgStr, 64)
+			if err != nil {
+				return nil, err
+			}
+
+		}
+		cpusStats[cpuName] = cpuStats
+	}
+
+	return cpusStats, nil
 }
