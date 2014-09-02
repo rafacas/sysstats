@@ -15,3 +15,7 @@ func GetCpuRawStats() (CpusRawStats, error) {
 func GetCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (CpusStats, error) {
 	return getCpuStats(firstSample, secondSample)
 }
+
+func GetCpuStatsInterval(interval int64) (CpusStats, error) {
+	return getCpuStatsInterval(interval)
+}

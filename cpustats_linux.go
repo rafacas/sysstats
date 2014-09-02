@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // CpuRawStats represents *one* CPU raw statistics of a linux system.
@@ -173,4 +174,27 @@ func getCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusStats
 	}
 
 	return cpusStats, nil
+}
+
+// getCpuStatsInterval returns the % CPU utilization between 2 samples taken in a time interval
+// (given in seconds)
+func getCpuStatsInterval(interval int64) (cpusStats CpusStats, err error) {
+	firstSample, err := getCpuRawStats()
+	if err != nil {
+		return nil, err
+	}
+
+	time.Sleep(time.Duration(interval) * time.Second)
+
+	secondSample, err := getCpuRawStats()
+	if err != nil {
+		return nil, err
+	}
+
+	cpusStats, err = getCpuStats(firstSample, secondSample)
+	if err != nil {
+		return nil, err
+	}
+
+	return cpusStats, err
 }
