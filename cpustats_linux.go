@@ -154,7 +154,7 @@ func getCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusStats
 			if key == `Total` {
 				continue
 			}
-			avg := float64(secondValue-firstRawStats[key]) * 100.0 / totalTime
+			avg := float64(secondValue-firstRawStats[key]) * 100.00 / totalTime
 			avgStr := fmt.Sprintf("%3.2f", avg)
 			cpuStats[key], err = strconv.ParseFloat(avgStr, 64)
 			if err != nil {
@@ -162,6 +162,13 @@ func getCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusStats
 			}
 
 		}
+		cpuTotal := 100.00 - cpuStats[`Idle`]
+		cpuTotalStr := fmt.Sprintf("%3.2f", cpuTotal)
+		cpuStats[`Total`], err = strconv.ParseFloat(cpuTotalStr, 64)
+		if err != nil {
+			return nil, err
+		}
+
 		cpusStats[cpuName] = cpuStats
 	}
 
