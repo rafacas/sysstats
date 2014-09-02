@@ -8,6 +8,10 @@ func GetMemStats() (MemStats, error) {
 	return getMemStats()
 }
 
-func GetCpuStats() (CpusRawStats, error) {
-	return getCpuStats()
+func GetCpuRawStats() (CpusRawStats, error) {
+	return getCpuRawStats()
+}
+
+func GetCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (CpusStats, error) {
+	return getCpuStats(firstSample, secondSample)
 }
