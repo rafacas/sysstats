@@ -68,7 +68,6 @@ func getCpuRawStats() (cpusRawStats CpusRawStats, err error) {
 			// No match so no more cpu 'lines'
 			break
 		}
-		fmt.Println(stats)
 		cpuName, rawStats, err := parseCpuRawStats(stats)
 		if err != nil {
 			return nil, err
@@ -128,9 +127,6 @@ func parseCpuRawStats(stats string) (cpuName string, rawStats CpuRawStats,
 // getCpuStats calculates the average between 2 CpusRawStats samples and returns
 // the % CPU utilization
 func getCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusStats CpusStats, err error) {
-	fmt.Println(firstSample)
-	fmt.Println(secondSample)
-
 	cpusStats = CpusStats{}
 
 	for cpuName, secondRawStats := range secondSample {
