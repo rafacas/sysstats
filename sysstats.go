@@ -31,3 +31,7 @@ func GetNetStats(firstSample NetRawStats, secondSample NetRawStats) (NetStats, e
 func GetNetStatsInterval(interval int64) (NetStats, error) {
 	return getNetStatsInterval(interval)
 }
+
+func GetDiskUsage() ([]DiskUsage, error) {
+	return getDiskUsage()
+}
