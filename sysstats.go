@@ -35,3 +35,15 @@ func GetNetStatsInterval(interval int64) (NetStats, error) {
 func GetDiskUsage() ([]DiskUsage, error) {
 	return getDiskUsage()
 }
+
+func GetDiskRawStats() ([]DiskRawStats, error) {
+	return getDiskRawStats()
+}
+
+func GetDiskStats(firstSample DiskRawStats, secondSample DiskRawStats) (DiskStats, error) {
+	return getDiskStats(firstSample, secondSample)
+}
+
+func GetDiskStatsInterval(interval int64) ([]DiskStats, error) {
+	return getDiskStatsInterval(interval)
+}
