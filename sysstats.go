@@ -51,3 +51,7 @@ func GetDiskStatsInterval(interval int64) ([]DiskStats, error) {
 func GetSockStats() (SockStats, error) {
 	return getSockStats()
 }
+
+func GetSysInfo() (SysInfo, error) {
+	return getSysInfo()
+}
