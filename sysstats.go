@@ -47,3 +47,7 @@ func GetDiskStats(firstSample DiskRawStats, secondSample DiskRawStats) (DiskStat
 func GetDiskStatsInterval(interval int64) ([]DiskStats, error) {
 	return getDiskStatsInterval(interval)
 }
+
+func GetSockStats() (SockStats, error) {
+	return getSockStats()
+}
