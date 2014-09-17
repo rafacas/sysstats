@@ -55,3 +55,7 @@ func GetSockStats() (SockStats, error) {
 func GetSysInfo() (SysInfo, error) {
 	return getSysInfo()
 }
+
+func GetFileStats() (FileStats, error) {
+	return getFileStats()
+}
