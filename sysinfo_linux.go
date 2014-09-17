@@ -3,9 +3,9 @@
 package sysstats
 
 import (
+	"errors"
 	"io/ioutil"
 	"os/exec"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -150,13 +150,12 @@ func getUptime() (uptime float64, err error) {
 		return -1, err
 	}
 
-	re := regexp.MustCompile(`^(\d*\.?\d*)\s+`)
-	match := re.FindStringSubmatch(string(content))
-	if err != nil {
-		return -1, err
+	fields := strings.Fields(string(content))
+	if len(fields) != 2 {
+		return -1, errors.New("Error parsing /proc/uptime. It should have 2 fields")
 	}
 
-	uptime, err = strconv.ParseFloat(match[1], 64)
+	uptime, err = strconv.ParseFloat(fields[0], 64)
 	if err != nil {
 		return -1, err
 	}
