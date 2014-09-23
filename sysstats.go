@@ -59,3 +59,15 @@ func GetSysInfo() (SysInfo, error) {
 func GetFileStats() (FileStats, error) {
 	return getFileStats()
 }
+
+func GetProcRawStats() (ProcRawStats, error) {
+	return getProcRawStats()
+}
+
+func GetProcAvgStats(firstSample ProcRawStats, secondSample ProcRawStats) (ProcAvgStats, error) {
+	return getProcAvgStats(firstSample, secondSample)
+}
+
+func GetProcStatsInterval(interval int64) (ProcAvgStats, error) {
+	return getProcStatsInterval(interval)
+}
