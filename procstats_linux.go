@@ -125,8 +125,8 @@ func getProcAvgStats(firstSample ProcRawStats, secondSample ProcRawStats) (procA
 	return procAvgStats, nil
 }
 
-// getProcStatsInterval returns the processes statistics between 2 samples taken in a
-// time interval (given in seconds)
+// getProcStatsInterval returns the processes statistics between 2 samples.
+// Time interval between the 2 samples is given in seconds
 func getProcStatsInterval(interval int64) (procAvgStats ProcAvgStats, err error) {
 	firstSample, err := getProcRawStats()
 	if err != nil {

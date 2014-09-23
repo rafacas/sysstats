@@ -12,11 +12,11 @@ import (
 	"time"
 )
 
-// DiskRawStats represents the disk IO raw statistics
+// DiskRawStats represents the disk IO raw statistics of a linux system.
 type DiskRawStats struct {
-	Major        int    // major number for the disk
-	Minor        int    // minor number for the disk
-	Name         string // disk name
+	Major        int    // Major number for the disk
+	Minor        int    // Minor number for the disk
+	Name         string // Disk name
 	ReadIOs      uint64 // # of reads completed since boot
 	ReadMerges   uint64 // # of reads merged since boot
 	ReadSectors  uint64 // # of sectors read since boot
@@ -27,15 +27,16 @@ type DiskRawStats struct {
 	WriteTicks   uint64 // # of milliseconds spent writing since boot
 	InFlight     uint64 // # of I/Os currently in progress
 	IOTicks      uint64 // # of milliseconds spent doing I/Os since boot
-	TimeInQueue  uint64 // weighted # of milliseconds spent doing I/Os since boot
+	TimeInQueue  uint64 // Weighted # of milliseconds spent doing I/Os since boot
 	SampleTime   int64  // Time when the sample was taken
 }
 
-// DiskStats represents the disk IO statistics
-type DiskStats struct {
-	Major       int     // major number for the disk
-	Minor       int     // minor number for the disk
-	Name        string  // disk name
+// DiskAvgStats represents the average disk IO statistics (per second) of a
+// linux system.
+type DiskAvgStats struct {
+	Major       int     // Major number for the disk
+	Minor       int     // Minor number for the disk
+	Name        string  // Disk name
 	ReadIOs     float64 // # of reads completed per second
 	ReadMerges  float64 // # of reads merged per second
 	ReadBytes   float64 // # of bytes read per second
@@ -44,10 +45,11 @@ type DiskStats struct {
 	WriteBytes  float64 // # of bytes written per second
 	InFlight    uint64  // # of I/Os currently in progress
 	IOTicks     uint64  // # of milliseconds spent doing I/Os
-	TimeInQueue uint64  // weighted # of milliseconds spent doing I/Os
+	TimeInQueue uint64  // Weighted # of milliseconds spent doing I/Os
 }
 
-// getDiskStats gets the disk IO stats of a linux system from the file /proc/diskstats
+// getDiskRawStats gets the disk IO stats of a linux system from the
+// file /proc/diskstats
 func getDiskRawStats() (diskRawStatsArr []DiskRawStats, err error) {
 	file, err := os.Open("/proc/diskstats")
 	if err != nil {
@@ -73,7 +75,8 @@ func getDiskRawStats() (diskRawStatsArr []DiskRawStats, err error) {
 	return diskRawStatsArr, nil
 }
 
-// parseDiskRawStats parses the disk stats with the /proc/diskstats format:
+// parseDiskRawStats parses the disk stats.
+// The file /proc/diskstats has the following format:
 //   7       0 loop0 0 0 0 0 0 0 0 0 0 0 0
 //   7       1 loop1 0 0 0 0 0 0 0 0 0 0 0
 //   7       2 loop2 0 0 0 0 0 0 0 0 0 0 0
@@ -149,10 +152,10 @@ func parseDiskRawStats(stats string) (diskRawStats DiskRawStats, err error) {
 	return diskRawStats, nil
 }
 
-// getDiskStats calculates the average between 2 DiskRawStats samples and returns the
-// number of IOs per second
-func getDiskStats(firstSample DiskRawStats, secondSample DiskRawStats) (diskStats DiskStats, err error) {
-	diskStats = DiskStats{}
+// getDiskAvgStats calculates the average between 2 DiskRawStats samples and returns
+// a DiskAvgStats variable with the number of IOs per second.
+func getDiskAvgStats(firstSample DiskRawStats, secondSample DiskRawStats) (diskAvgStats DiskAvgStats, err error) {
+	diskAvgStats = DiskAvgStats{}
 
 	timeDelta := float64(secondSample.SampleTime - firstSample.SampleTime)
 
@@ -163,36 +166,36 @@ func getDiskStats(firstSample DiskRawStats, secondSample DiskRawStats) (diskStat
 		msg := fmt.Sprintf("The samples are from different disks: \n\tfirstSample -> %d %d %s \n\t"+
 			"secondSample -> %d %d %s\n", firstSample.Major, firstSample.Minor, firstSample.Name,
 			secondSample.Major, secondSample.Minor, secondSample.Name)
-		return DiskStats{}, errors.New(msg)
+		return DiskAvgStats{}, errors.New(msg)
 	} else {
-		diskStats.Major = firstSample.Major
-		diskStats.Minor = firstSample.Minor
-		diskStats.Name = firstSample.Name
+		diskAvgStats.Major = firstSample.Major
+		diskAvgStats.Minor = firstSample.Minor
+		diskAvgStats.Name = firstSample.Name
 	}
 
 	// Calculate average between the 2 samples
-	diskStats.ReadIOs = float64(secondSample.ReadIOs-firstSample.ReadIOs) / timeDelta
-	diskStats.ReadMerges = float64(secondSample.ReadMerges-firstSample.ReadMerges) / timeDelta
-	diskStats.ReadBytes = float64((secondSample.ReadSectors*512)-(firstSample.ReadSectors*512)) / timeDelta
-	diskStats.WriteIOs = float64(secondSample.WriteIOs-firstSample.WriteIOs) / timeDelta
-	diskStats.WriteMerges = float64(secondSample.WriteMerges-firstSample.WriteMerges) / timeDelta
-	diskStats.WriteBytes = float64((secondSample.WriteSectors*512)-(firstSample.WriteSectors*512)) / timeDelta
+	diskAvgStats.ReadIOs = float64(secondSample.ReadIOs-firstSample.ReadIOs) / timeDelta
+	diskAvgStats.ReadMerges = float64(secondSample.ReadMerges-firstSample.ReadMerges) / timeDelta
+	diskAvgStats.ReadBytes = float64((secondSample.ReadSectors*512)-(firstSample.ReadSectors*512)) / timeDelta
+	diskAvgStats.WriteIOs = float64(secondSample.WriteIOs-firstSample.WriteIOs) / timeDelta
+	diskAvgStats.WriteMerges = float64(secondSample.WriteMerges-firstSample.WriteMerges) / timeDelta
+	diskAvgStats.WriteBytes = float64((secondSample.WriteSectors*512)-(firstSample.WriteSectors*512)) / timeDelta
 
-	diskStats.InFlight = secondSample.InFlight
-	diskStats.TimeInQueue = secondSample.TimeInQueue - firstSample.TimeInQueue
+	diskAvgStats.InFlight = secondSample.InFlight
+	diskAvgStats.TimeInQueue = secondSample.TimeInQueue - firstSample.TimeInQueue
 
-	return diskStats, nil
+	return diskAvgStats, nil
 }
 
-// getDiskStatsInterval returns the IO average betwe 2 samples taken in a time interval
-// (given in seconds)
-func getDiskStatsInterval(interval int64) (diskStatsArr []DiskStats, err error) {
+// getDiskStatsInterval returns the IO average between 2 samples.
+// Time interval between the 2 samples is given in seconds.
+func getDiskStatsInterval(interval int64) (diskAvgStatsArr []DiskAvgStats, err error) {
 	firstSampleArr, err := getDiskRawStats()
 	if err != nil {
 		return nil, err
 	}
 
-	diskStatsArr = make([]DiskStats, 0, len(firstSampleArr)-1)
+	diskAvgStatsArr = make([]DiskAvgStats, 0, len(firstSampleArr)-1)
 
 	time.Sleep(time.Duration(interval) * time.Second)
 
@@ -205,11 +208,11 @@ func getDiskStatsInterval(interval int64) (diskStatsArr []DiskStats, err error) 
 		diskName := firstSample.Name
 		for _, secondSample := range secondSampleArr {
 			if secondSample.Name == diskName {
-				diskStats, err := getDiskStats(firstSample, secondSample)
+				diskAvgStats, err := getDiskAvgStats(firstSample, secondSample)
 				if err != nil {
 					return nil, err
 				}
-				diskStatsArr = append(diskStatsArr, diskStats)
+				diskAvgStatsArr = append(diskAvgStatsArr, diskAvgStats)
 				break
 			} else {
 				continue
@@ -217,5 +220,5 @@ func getDiskStatsInterval(interval int64) (diskStatsArr []DiskStats, err error) 
 		}
 	}
 
-	return diskStatsArr, nil
+	return diskAvgStatsArr, nil
 }

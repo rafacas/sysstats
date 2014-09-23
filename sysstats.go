@@ -12,11 +12,11 @@ func GetCpuRawStats() (CpusRawStats, error) {
 	return getCpuRawStats()
 }
 
-func GetCpuStats(firstSample CpusRawStats, secondSample CpusRawStats) (CpusStats, error) {
-	return getCpuStats(firstSample, secondSample)
+func GetCpuAvgStats(firstSample CpusRawStats, secondSample CpusRawStats) (CpusAvgStats, error) {
+	return getCpuAvgStats(firstSample, secondSample)
 }
 
-func GetCpuStatsInterval(interval int64) (CpusStats, error) {
+func GetCpuStatsInterval(interval int64) (CpusAvgStats, error) {
 	return getCpuStatsInterval(interval)
 }
 
@@ -24,11 +24,11 @@ func GetNetRawStats() (NetRawStats, error) {
 	return getNetRawStats()
 }
 
-func GetNetStats(firstSample NetRawStats, secondSample NetRawStats) (NetStats, error) {
-	return getNetStats(firstSample, secondSample)
+func GetNetAvgStats(firstSample NetRawStats, secondSample NetRawStats) (NetAvgStats, error) {
+	return getNetAvgStats(firstSample, secondSample)
 }
 
-func GetNetStatsInterval(interval int64) (NetStats, error) {
+func GetNetStatsInterval(interval int64) (NetAvgStats, error) {
 	return getNetStatsInterval(interval)
 }
 
@@ -40,11 +40,11 @@ func GetDiskRawStats() ([]DiskRawStats, error) {
 	return getDiskRawStats()
 }
 
-func GetDiskStats(firstSample DiskRawStats, secondSample DiskRawStats) (DiskStats, error) {
-	return getDiskStats(firstSample, secondSample)
+func GetDiskAvgStats(firstSample DiskRawStats, secondSample DiskRawStats) (DiskAvgStats, error) {
+	return getDiskAvgStats(firstSample, secondSample)
 }
 
-func GetDiskStatsInterval(interval int64) ([]DiskStats, error) {
+func GetDiskStatsInterval(interval int64) ([]DiskAvgStats, error) {
 	return getDiskStatsInterval(interval)
 }
 

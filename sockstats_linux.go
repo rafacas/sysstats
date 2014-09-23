@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-// SockStats represents the socket statistics of a linux system
+// SockStats represents the socket statistics of a linux system.
 type SockStats struct {
 	Used        uint64 // Total number of used sockets
 	TcpInUse    uint64 // TCP sockets in use
@@ -80,9 +80,6 @@ func getSockStats() (sockStats SockStats, err error) {
 				return SockStats{}, err
 			}
 			sockStats.IpFrag = ipFrag
-		} else {
-			// No match
-			continue
 		}
 	}
 

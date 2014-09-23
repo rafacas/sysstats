@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// SysInfo represents the linux system info
+// SysInfo represents the linux system info.
 type SysInfo struct {
 	Hostname  string
 	Domain    string
@@ -21,7 +21,7 @@ type SysInfo struct {
 	Uptime    float64
 }
 
-// getSysInfo gets the system info
+// getSysInfo gets the system info.
 func getSysInfo() (sysInfo SysInfo, err error) {
 	sysInfo = SysInfo{}
 

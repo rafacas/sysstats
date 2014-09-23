@@ -50,7 +50,6 @@ func getDiskUsage() (diskUsageArr []DiskUsage, err error) {
 	scanner.Split(bufio.ScanLines)
 	// Filter the header
 	scanner.Scan()
-	//
 	for scanner.Scan() {
 		line := scanner.Text()
 		diskUsage, err := parseDiskUsage(line)
