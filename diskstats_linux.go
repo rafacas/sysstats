@@ -152,9 +152,9 @@ func parseDiskRawStats(stats string) (diskRawStats DiskRawStats, err error) {
 	return diskRawStats, nil
 }
 
-// getDiskAvgStats calculates the average between 2 DiskRawStats samples and returns
+// diskAvgStats calculates the average between 2 DiskRawStats samples and returns
 // a DiskAvgStats variable with the number of IOs per second.
-func getDiskAvgStats(firstSample DiskRawStats, secondSample DiskRawStats) (diskAvgStats DiskAvgStats, err error) {
+func diskAvgStats(firstSample DiskRawStats, secondSample DiskRawStats) (diskAvgStats DiskAvgStats, err error) {
 	diskAvgStats = DiskAvgStats{}
 
 	timeDelta := float64(secondSample.SampleTime - firstSample.SampleTime)
@@ -187,6 +187,31 @@ func getDiskAvgStats(firstSample DiskRawStats, secondSample DiskRawStats) (diskA
 	return diskAvgStats, nil
 }
 
+// getDiskAvgStats calculates the average between 2 arrays of DiskRawStats
+// samples and returns an array of DiskAvgStats
+func getDiskAvgStats(firstSampleArr []DiskRawStats, secondSampleArr []DiskRawStats) (diskAvgStatsArr []DiskAvgStats, err error) {
+
+	diskAvgStatsArr = make([]DiskAvgStats, 0, len(firstSampleArr))
+
+	for _, firstSample := range firstSampleArr {
+		diskName := firstSample.Name
+		for _, secondSample := range secondSampleArr {
+			if secondSample.Name == diskName {
+				diskAvgStats, err := diskAvgStats(firstSample, secondSample)
+				if err != nil {
+					return nil, err
+				}
+				diskAvgStatsArr = append(diskAvgStatsArr, diskAvgStats)
+				break
+			} else {
+				continue
+			}
+		}
+	}
+
+	return diskAvgStatsArr, nil
+}
+
 // getDiskStatsInterval returns the IO average between 2 samples.
 // Time interval between the 2 samples is given in seconds.
 func getDiskStatsInterval(interval int64) (diskAvgStatsArr []DiskAvgStats, err error) {
@@ -195,7 +220,7 @@ func getDiskStatsInterval(interval int64) (diskAvgStatsArr []DiskAvgStats, err e
 		return nil, err
 	}
 
-	diskAvgStatsArr = make([]DiskAvgStats, 0, len(firstSampleArr)-1)
+	diskAvgStatsArr = make([]DiskAvgStats, 0, len(firstSampleArr))
 
 	time.Sleep(time.Duration(interval) * time.Second)
 
@@ -208,7 +233,7 @@ func getDiskStatsInterval(interval int64) (diskAvgStatsArr []DiskAvgStats, err e
 		diskName := firstSample.Name
 		for _, secondSample := range secondSampleArr {
 			if secondSample.Name == diskName {
-				diskAvgStats, err := getDiskAvgStats(firstSample, secondSample)
+				diskAvgStats, err := diskAvgStats(firstSample, secondSample)
 				if err != nil {
 					return nil, err
 				}

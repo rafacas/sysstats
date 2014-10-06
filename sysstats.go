@@ -40,8 +40,8 @@ func GetDiskRawStats() ([]DiskRawStats, error) {
 	return getDiskRawStats()
 }
 
-func GetDiskAvgStats(firstSample DiskRawStats, secondSample DiskRawStats) (DiskAvgStats, error) {
-	return getDiskAvgStats(firstSample, secondSample)
+func GetDiskAvgStats(firstSampleArr []DiskRawStats, secondSampleArr []DiskRawStats) ([]DiskAvgStats, error) {
+	return getDiskAvgStats(firstSampleArr, secondSampleArr)
 }
 
 func GetDiskStatsInterval(interval int64) ([]DiskAvgStats, error) {
