@@ -13,6 +13,7 @@ import (
 // SysInfo represents the linux system info.
 type SysInfo struct {
 	Hostname  string  `json:"hostname"`
+	FQDN      string  `json:"fqdn"`
 	Domain    string  `json:"domain"`
 	OsType    string  `json:"ostype"`
 	OsRelease string  `json:"osrelease"`
@@ -73,6 +74,13 @@ func getSysInfo() (sysInfo SysInfo, err error) {
 		return SysInfo{}, err
 	}
 	sysInfo.Uptime = uptime
+
+	// FQDN
+	fqdn, err := getFqdn()
+	if err != nil {
+		return SysInfo{}, err
+	}
+	sysInfo.FQDN = fqdn
 
 	return sysInfo, nil
 }
@@ -161,4 +169,21 @@ func getUptime() (uptime float64, err error) {
 	}
 
 	return uptime, nil
+}
+
+func getFqdn() (fqdn string, err error) {
+	// Check `hostname` path
+	hostname, err := exec.LookPath("hostname")
+	if err != nil {
+		return "", err
+	}
+
+	// Run `hostname -f` to get the FQDN
+	out, err := exec.Command(hostname, "-f").Output()
+	if err != nil {
+		return "", err
+	}
+
+	fqdn = strings.TrimSpace(string(out))
+	return fqdn, nil
 }
