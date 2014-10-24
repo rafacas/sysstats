@@ -11,13 +11,13 @@ import (
 
 // SockStats represents the socket statistics of a linux system.
 type SockStats struct {
-	Used        uint64 // Total number of used sockets
-	TcpInUse    uint64 // TCP sockets in use
-	TcpOrphaned uint64 // TCP sockets orphaned
-	TcpTimeWait uint64 // TCP sockets in TIME_WAIT
-	UdpInUse    uint64 // UDP sockets in use
-	Raw         uint64 // RAW sockets in use
-	IpFrag      uint64 // # of IP fragments in use
+	Used        uint64 `json:"used"`        // Total number of used sockets
+	TcpInUse    uint64 `json:"tcpinuse"`    // TCP sockets in use
+	TcpOrphaned uint64 `json:"tcporphaned"` // TCP sockets orphaned
+	TcpTimeWait uint64 `json:"tcptimewait"` // TCP sockets in TIME_WAIT
+	UdpInUse    uint64 `json:"udpinuse"`    // UDP sockets in use
+	Raw         uint64 `json:"raw"`         // RAW sockets in use
+	IpFrag      uint64 `json:"ipfrag"`      // # of IP fragments in use
 }
 
 // getSockStats gets the socket statistics of a linux system from the file

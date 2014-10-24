@@ -115,28 +115,28 @@ func parseCpuRawStats(stats string) (cpuName string, rawStats CpuRawStats,
 		if err != nil {
 			return "", nil, err
 		}
-		rawStats[`Total`] += stat
+		rawStats[`total`] += stat
 		switch i {
 		case 1:
-			rawStats[`User`] = stat
+			rawStats[`user`] = stat
 		case 2:
-			rawStats[`Nice`] = stat
+			rawStats[`nice`] = stat
 		case 3:
-			rawStats[`System`] = stat
+			rawStats[`system`] = stat
 		case 4:
-			rawStats[`Idle`] = stat
+			rawStats[`idle`] = stat
 		case 5:
-			rawStats[`Iowait`] = stat
+			rawStats[`iowait`] = stat
 		case 6:
-			rawStats[`Irq`] = stat
+			rawStats[`irq`] = stat
 		case 7:
-			rawStats[`Softirq`] = stat
+			rawStats[`softirq`] = stat
 		case 8:
-			rawStats[`Steal`] = stat
+			rawStats[`steal`] = stat
 		case 9:
-			rawStats[`Guest`] = stat
+			rawStats[`guest`] = stat
 		case 10:
-			rawStats[`GuestNice`] = stat
+			rawStats[`guestnice`] = stat
 		}
 	}
 
@@ -163,7 +163,7 @@ func getCpuAvgStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusAv
 		}
 
 		cpuStats := CpuAvgStats{}
-		timeDelta := float64(secondRawStats[`Total`] - firstRawStats[`Total`])
+		timeDelta := float64(secondRawStats[`total`] - firstRawStats[`total`])
 		// Calculate average between the two samples
 		for key, secondValue := range secondRawStats {
 			// Don't calculate average if the key is 'Total'
@@ -178,9 +178,9 @@ func getCpuAvgStats(firstSample CpusRawStats, secondSample CpusRawStats) (cpusAv
 			}
 
 		}
-		cpuTotal := 100.00 - cpuStats[`Idle`]
+		cpuTotal := 100.00 - cpuStats[`idle`]
 		cpuTotalStr := fmt.Sprintf("%3.2f", cpuTotal)
-		cpuStats[`Total`], err = strconv.ParseFloat(cpuTotalStr, 64)
+		cpuStats[`total`], err = strconv.ParseFloat(cpuTotalStr, 64)
 		if err != nil {
 			return nil, err
 		}

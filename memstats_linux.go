@@ -8,6 +8,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 // MemStat represents the memory statistics on a linux system.
@@ -71,13 +72,13 @@ func getMemStats() (memStats MemStats, err error) {
 			fmt.Println(err)
 			continue
 		} else {
-			memStats[key] = value
+			memStats[strings.ToLower(key)] = value
 		}
 	}
 
-	memStats[`MemUsed`] = memStats[`MemTotal`] - memStats[`MemFree`]
-	memStats[`SwapUsed`] = memStats[`SwapTotal`] - memStats[`SwapFree`]
-	memStats[`RealFree`] = memStats[`MemFree`] + memStats[`Buffers`] + memStats[`Cached`]
+	memStats[`memused`] = memStats[`memtotal`] - memStats[`memfree`]
+	memStats[`swapused`] = memStats[`swaptotal`] - memStats[`swapfree`]
+	memStats[`realfree`] = memStats[`memfree`] + memStats[`buffers`] + memStats[`cached`]
 
 	return memStats, nil
 }

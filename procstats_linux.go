@@ -15,22 +15,25 @@ import (
 
 // ProcStats represents the processes statistics (NOT counted since boot)
 type ProcStats struct {
-	Running  uint64 // # of processes in runnable state (Linux 2.5.45 onward)
-	Blocked  uint64 // # of processes blocked waiting for I/O to complete (Linux 2.5.45 onward)
-	RunQueue uint64 // # of currently runnable kernel scheduling entities (processes, threads)
-	Total    uint64 // # of kernel scheduling entities that currently exist on the system
+	Running uint64 `json:"running"` // # of processes in runnable state (Linux 2.5.45 onward)
+	// # of processes blocked waiting for I/O to complete (Linux 2.5.45 onward)
+	Blocked uint64 `json:"blocked"`
+	// # of currently runnable kernel scheduling entities (processes, threads)
+	RunQueue uint64 `json:"runqueue"`
+	// # of kernel scheduling entities that currently exist on the system
+	Total uint64 `json:"total"`
 }
 
 // ProcRawStats represents the raw processes statistics
 type ProcRawStats struct {
-	Processes uint64 // # of forks since boot
+	Processes uint64 `json:"processes"` // # of forks since boot
 	ProcStats
-	Time int64 // Time when the sample was taken (Unix time)
+	Time int64 `json:"time"` // Time when the sample was taken (Unix time)
 }
 
 // ProcAvgStats represents the processes statistics
 type ProcAvgStats struct {
-	NewProcs float64 // # of forks per second
+	NewProcs float64 `json:"newprocs"` // # of forks per second
 	ProcStats
 }
 

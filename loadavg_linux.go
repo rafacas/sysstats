@@ -10,9 +10,9 @@ import (
 
 // LoadAvg represents the load average of the system
 type LoadAvg struct {
-	Avg1  float64 // The average processor workload of the last minute
-	Avg5  float64 // The average processor workload of the last 5 minutes
-	Avg15 float64 // The average processor workload of the last 15 minutes
+	Avg1  float64 `json:"avg1"`  // The average processor workload of the last minute
+	Avg5  float64 `json:"avg5"`  // The average processor workload of the last 5 minutes
+	Avg15 float64 `json:"avg15"` // The average processor workload of the last 15 minutes
 }
 
 // getLoadAvg gets the load average of a linux system from the

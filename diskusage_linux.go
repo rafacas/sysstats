@@ -13,13 +13,13 @@ import (
 
 // DiskUsage represents a file system disk space usage
 type DiskUsage struct {
-	FileSystem string
-	Type       string
-	Total      uint64
-	Used       uint64
-	Available  uint64
-	UsedPer    uint64
-	MountedOn  string
+	FileSystem string `json:"filesystem"`
+	Type       string `json:"type"`
+	Total      uint64 `json:"total"`
+	Used       uint64 `json:"used"`
+	Available  uint64 `json:"available"`
+	UsedPer    uint64 `json:"usedper"`
+	MountedOn  string `json:"mountedon"`
 }
 
 // getDiskUsage gets the disk usage of a linux system running the command:

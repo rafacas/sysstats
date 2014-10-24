@@ -14,38 +14,38 @@ import (
 
 // DiskRawStats represents the disk IO raw statistics of a linux system.
 type DiskRawStats struct {
-	Major        int    // Major number for the disk
-	Minor        int    // Minor number for the disk
-	Name         string // Disk name
-	ReadIOs      uint64 // # of reads completed since boot
-	ReadMerges   uint64 // # of reads merged since boot
-	ReadSectors  uint64 // # of sectors read since boot
-	ReadTicks    uint64 // # of milliseconds spent reading since boot
-	WriteIOs     uint64 // # of writes completed since boot
-	WriteMerges  uint64 // # of writes merged since boot
-	WriteSectors uint64 // # of sectors written since boot
-	WriteTicks   uint64 // # of milliseconds spent writing since boot
-	InFlight     uint64 // # of I/Os currently in progress
-	IOTicks      uint64 // # of milliseconds spent doing I/Os since boot
-	TimeInQueue  uint64 // Weighted # of milliseconds spent doing I/Os since boot
-	SampleTime   int64  // Time when the sample was taken
+	Major        int    `json:"major"`        // Major number for the disk
+	Minor        int    `json:"minor"`        // Minor number for the disk
+	Name         string `json:"name"`         // Disk name
+	ReadIOs      uint64 `json:"readios"`      // # of reads completed since boot
+	ReadMerges   uint64 `json:"readmerges"`   // # of reads merged since boot
+	ReadSectors  uint64 `json:"readsectors"`  // # of sectors read since boot
+	ReadTicks    uint64 `json:"readticks"`    // # of milliseconds spent reading since boot
+	WriteIOs     uint64 `json:"writeios"`     // # of writes completed since boot
+	WriteMerges  uint64 `json:"writemerges"`  // # of writes merged since boot
+	WriteSectors uint64 `json:"writesectors"` // # of sectors written since boot
+	WriteTicks   uint64 `json:"writeticks"`   // # of milliseconds spent writing since boot
+	InFlight     uint64 `json:"inflight"`     // # of I/Os currently in progress
+	IOTicks      uint64 `json:"ioticks"`      // # of milliseconds spent doing I/Os since boot
+	TimeInQueue  uint64 `json:"timeinqueue"`  // Weighted # of milliseconds spent doing I/Os since boot
+	SampleTime   int64  `json:"sampletime"`   // Time when the sample was taken
 }
 
 // DiskAvgStats represents the average disk IO statistics (per second) of a
 // linux system.
 type DiskAvgStats struct {
-	Major       int     // Major number for the disk
-	Minor       int     // Minor number for the disk
-	Name        string  // Disk name
-	ReadIOs     float64 // # of reads completed per second
-	ReadMerges  float64 // # of reads merged per second
-	ReadBytes   float64 // # of bytes read per second
-	WriteIOs    float64 // # of writes completed per second
-	WriteMerges float64 // # of writes merged per second
-	WriteBytes  float64 // # of bytes written per second
-	InFlight    uint64  // # of I/Os currently in progress
-	IOTicks     uint64  // # of milliseconds spent doing I/Os
-	TimeInQueue uint64  // Weighted # of milliseconds spent doing I/Os
+	Major       int     `json:"major"`       // Major number for the disk
+	Minor       int     `json:"minor"`       // Minor number for the disk
+	Name        string  `json:"name"`        // Disk name
+	ReadIOs     float64 `json:"readios"`     // # of reads completed per second
+	ReadMerges  float64 `json:"readmerges"`  // # of reads merged per second
+	ReadBytes   float64 `json:"readbytes"`   // # of bytes read per second
+	WriteIOs    float64 `json:"writeios"`    // # of writes completed per second
+	WriteMerges float64 `json:"writemerges"` // # of writes merged per second
+	WriteBytes  float64 `json:"writebytes"`  // # of bytes written per second
+	InFlight    uint64  `json:"inflight"`    // # of I/Os currently in progress
+	IOTicks     uint64  `json:"ioticks"`     // # of milliseconds spent doing I/Os
+	TimeInQueue uint64  `json:"timeinqueue"` // Weighted # of milliseconds spent doing I/Os
 }
 
 // getDiskRawStats gets the disk IO stats of a linux system from the

@@ -12,13 +12,13 @@ import (
 
 // SysInfo represents the linux system info.
 type SysInfo struct {
-	Hostname  string
-	Domain    string
-	OsType    string
-	OsRelease string
-	OsVersion string
-	OsArch    string
-	Uptime    float64
+	Hostname  string  `json:"hostname"`
+	Domain    string  `json:"domain"`
+	OsType    string  `json:"ostype"`
+	OsRelease string  `json:"osrelease"`
+	OsVersion string  `json:"osversion"`
+	OsArch    string  `json:"osarch"`
+	Uptime    float64 `json:"uptime"`
 }
 
 // getSysInfo gets the system info.

@@ -34,11 +34,11 @@ func getLoadAvg() (loadAvg LoadAvg, err error) {
 		}
 		switch i {
 		case 1:
-			loadAvg[`Avg1`] = load
+			loadAvg[`avg1`] = load
 		case 2:
-			loadAvg[`Avg5`] = load
+			loadAvg[`avg5`] = load
 		case 3:
-			loadAvg[`Avg15`] = load
+			loadAvg[`avg15`] = load
 		}
 	}
 

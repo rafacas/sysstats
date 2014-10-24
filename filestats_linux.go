@@ -11,11 +11,11 @@ import (
 
 // FileStats represents the file descriptor stats
 type FileStats struct {
-	FhAlloc uint64 // # of allocated file handlers (# files currently opened)
-	FhFree  uint64 // # of free file handlers
-	FhMax   uint64 // maximum # of file handlers
-	InAlloc uint64 // # of inodes the system has allocated
-	InFree  uint64 // # of free inodes
+	FhAlloc uint64 `json:"fhalloc"` // # of allocated file handlers (# files currently opened)
+	FhFree  uint64 `json:"fhfree"`  // # of free file handlers
+	FhMax   uint64 `json:"fhmax"`   // maximum # of file handlers
+	InAlloc uint64 `json:"inalloc"` // # of inodes the system has allocated
+	InFree  uint64 `json:"infree"`  // # of free inodes
 }
 
 // getFileStats gets the file statistics of a linux system from the files:
