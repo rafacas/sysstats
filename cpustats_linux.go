@@ -14,8 +14,8 @@ import (
 )
 
 // CpuRawStats represents *one* CPU raw statistics of a linux system.
-// The amount of time, measured in units of USER_HZ
-// Keys:
+//
+// Map keys:
 //   User      - Time spent in user mode.
 //   Nice      - Time spent in user mode with low priority (nice).
 //   System    - Time spent in system mode.
@@ -31,12 +31,13 @@ import (
 //               operating systems under the control of the Linux kernel)
 //               (since 2.6.33).
 //   Total     - Total time.
-// * Note: CPU time is measured in units of USER_HZ (1/100ths of a second on
-//         (most architectures)
+// Note: CPU time is measured in units of USER_HZ (1/100ths of a second on most
+// architectures)
 type CpuRawStats map[string]uint64
 
 // CpuAvgStats represents *one* CPU statistics of a linux system.
-// Keys:
+//
+// Map keys:
 //   User      - % of CPU time spent in user mode.
 //   Nice      - % of CPU time spent in user mode with low priority (nice).
 //   System    - % of CPU time spent in system mode.
@@ -55,16 +56,18 @@ type CpuRawStats map[string]uint64
 type CpuAvgStats map[string]float64
 
 // CpusRawStats represents *all* the CPU raw statistics of a linux system.
-// Keys:
-//   Name - Name of the Cpu (as it is on /proc/stat: cpu, cpu0,...).
+//
+// Map keys:
+//   Name - Name of the CPU (as it is on /proc/stat: cpu, cpu0,...).
 type CpusRawStats map[string]CpuRawStats
 
 // CpusAvgStats represents *all* the CPU statistics of a linux system.
-// Keys:
-//   Name - Name of the Cpu (as it is on /proc/stat: cpu, cpu0,...).
+//
+// Map keys:
+//   Name - Name of the CPU (as it is on /proc/stat: cpu, cpu0,...).
 type CpusAvgStats map[string]CpuAvgStats
 
-// getCpuRawStats gets the Cpu raw stats of a linux system from the
+// getCpuRawStats gets the CPU raw stats of a linux system from the
 // file /proc/stat
 func getCpuRawStats() (cpusRawStats CpusRawStats, err error) {
 	file, err := os.Open("/proc/stat")
@@ -100,10 +103,10 @@ func getCpuRawStats() (cpusRawStats CpusRawStats, err error) {
 // The stat file has the following format:
 //   cpu  294 0 309 10612 71 30 0 0 0 0
 // It returns:
-// - cpuName is the name of the CPU (cpu, cpu0, cpu1, etc)
-// - rawStats has the following format:
-//   map[User:9366 Nice:0 System:5692 Iowait:114 Steal:0 GuestNice:0
-//       Idle:1458880 Irq:806 Softirq:0 Guest:0]
+//   - cpuName is the name of the CPU (cpu, cpu0, cpu1, etc)
+//   - rawStats has the following format:
+//       map[User:9366 Nice:0 System:5692 Iowait:114 Steal:0 GuestNice:0
+//           Idle:1458880 Irq:806 Softirq:0 Guest:0]
 func parseCpuRawStats(stats string) (cpuName string, rawStats CpuRawStats,
 	err error) {
 	rawStats = CpuRawStats{}

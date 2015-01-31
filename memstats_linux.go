@@ -12,7 +12,8 @@ import (
 )
 
 // MemStat represents the memory statistics on a linux system.
-// Keys of the map:
+//
+// Map keys:
 //   MemUsed      -  Total size of used memory in kilobytes.
 //   MemFree      -  Total size of free memory in kilobytes.
 //   MemTotal     -  Total size of memory in kilobytes.

@@ -14,7 +14,8 @@ import (
 
 // IfaceRawStats represents *one* network interface raw statistics of a
 // linux system.
-// Keys of the map:
+//
+// Map keys:
 //   rxbytes -  # of bytes.
 //   rxpkts  -  # of packets.
 //   rxerrs  -  # of errors that happend while receiving packets.
@@ -34,7 +35,8 @@ import (
 type IfaceRawStats map[string]uint64
 
 // IfaceAvgStats represents *one* network interface statistics of a linux system.
-// Keys of the map:
+//
+// Map keys:
 //   rxbytes -  # of bytes per second.
 //   rxpkts  -  # of packets per second.
 //   rxerrs  -  # of errors that happend while receiving packets per second.
@@ -54,12 +56,14 @@ type IfaceRawStats map[string]uint64
 type IfaceAvgStats map[string]float64
 
 // NetRawStats represents *all* the network interfaces raw statistics of a linux system.
-// Keys of the map:
+//
+// Map keys:
 //   Name - name of the network interface
 type NetRawStats map[string]IfaceRawStats
 
 // NetAvgStats represents *all* the network interfaces statistics of a linux system.
-// Keys of the map:
+//
+// Map keys:
 //   Name - name of the network interface
 type NetAvgStats map[string]IfaceAvgStats
 

@@ -25,9 +25,9 @@ type DiskUsage struct {
 // getDiskUsage gets the disk usage of a linux system running the command:
 //   df -kTP
 // where:
-//     -k: block size = 1K
-//     -T: prints the file system type
-//     -P: uses the POSIX output format
+//   -k: block size = 1K
+//   -T: prints the file system type
+//   -P: uses the POSIX output format
 // It returns an array of DiskUsage elements (as many elements as file systems
 // has the OS)
 func getDiskUsage() (diskUsageArr []DiskUsage, err error) {
