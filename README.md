@@ -1,4 +1,4 @@
-# sysstats [![godoc](https://img.shields.io/badge/godoc-sysstats-blue.svg)]
+# sysstats [![godoc](https://img.shields.io/badge/godoc-sysstats-blue.svg)](http://godoc.org/github.com/rafacas/sysstats)
 
 Go package that provides system statistics.
 
