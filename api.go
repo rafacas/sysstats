@@ -1,6 +1,8 @@
 // Package sysstats provides system statistics.
 package sysstats
 
+// Public API
+
 // GetLoadAvg returns the load average of the system.
 func GetLoadAvg() (LoadAvg, error) {
 	return getLoadAvg()
